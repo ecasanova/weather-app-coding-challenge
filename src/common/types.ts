@@ -3,6 +3,10 @@ export interface WeatherData {
   temperature: number;
   description: string;
   icon: string;
+  location: Location;
+}
+
+export interface Location {
   latitude: number | null;
   longitude: number | null;
 }

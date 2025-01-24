@@ -1,5 +1,10 @@
+/* react */
 import React, { useEffect, useState } from "react";
+
+/* styles */
 import "./WeatherDisplay.css";
+
+/* types */
 import { WeatherData } from "../../common/types";
 
 const WeatherDisplay: React.FC<{ data: WeatherData }> = ({ data }) => {
@@ -18,8 +23,8 @@ const WeatherDisplay: React.FC<{ data: WeatherData }> = ({ data }) => {
           <p>{wheatherData.description}</p>
           <h3>{wheatherData.temperature}°C</h3>
           <p>
-            <b>Latitud:</b> {wheatherData.latitude} <br />
-            <b>Longitud:</b> {wheatherData.longitude}
+            <b>Latitud:</b> {wheatherData.location.latitude} <br />
+            <b>Longitud:</b> {wheatherData.location.longitude}
           </p>
         </>
       ) : (
