@@ -17,7 +17,7 @@ const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
 
   return (
     <>
-      {wheatherData ? (
+      {wheatherData && (
         <div className="weather-card">
           <h2 className="city-name">
             {wheatherData.name}, {wheatherData.sys.country}
@@ -67,8 +67,6 @@ const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
             </div>
           </div>
         </div>
-      ) : (
-        <>No weather data available.</>
       )}
     </>
   );

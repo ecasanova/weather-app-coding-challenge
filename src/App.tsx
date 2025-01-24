@@ -20,9 +20,11 @@ function App() {
     longitude: null,
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const handleGetLocation = useCallback(() => {
+    setLoading(true);
     getLocation(setLocation, setError);
   }, []);
 
@@ -30,6 +32,7 @@ function App() {
     const getWeather = async () => {
       try {
         await getWeatherData(location, setError, setWeatherData);
+        setLoading(false);
       } catch (err) {
         console.error(err);
         setError("Unable to retrieve weather data.");
@@ -41,8 +44,17 @@ function App() {
 
   return (
     <div>
-      {!location && <button onClick={handleGetLocation}>Get Location</button>}
-      {location && <WeatherDisplay data={weatherData} />}
+      {!location.latitude && !location.longitude && (
+        <button onClick={handleGetLocation}>Get Location</button>
+      )}
+      {loading && (
+        <div className="loading-container">
+          <div className="loading"></div>
+        </div>
+      )}
+      {location.latitude && location.longitude && (
+        <WeatherDisplay data={weatherData} />
+      )}
       {error && <p>{error}</p>}
     </div>
   );
