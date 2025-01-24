@@ -17,7 +17,7 @@ function App() {
 
   const getLocation = () => {
     if (!navigator.geolocation) {
-      setError("La geolocalización no está soportada por tu navegador.");
+      setError("Geolocation is not supported by your browser.");
       return;
     }
 
@@ -28,7 +28,7 @@ function App() {
         setError("");
       },
       (err) => {
-        setError("No se pudo obtener la ubicación. " + err.message);
+        setError("Unable to retrieve location. " + err.message);
       }
     );
   };
