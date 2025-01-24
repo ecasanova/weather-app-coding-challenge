@@ -1,38 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./WeatherDisplay.css";
+import { WeatherData } from "../../common/types";
 
-interface WeatherDisplayProps {
-  city: string | null;
-  temperature: number;
-  description: string;
-  icon: string;
-  latitude: number | null;
-  longitude: number | null;
-}
+const WeatherDisplay: React.FC<{ data: WeatherData }> = ({ data }) => {
+  const [wheatherData, setWeatherData] = useState<WeatherData>(data);
 
-const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
-  city,
-  temperature,
-  description,
-  latitude,
-  longitude,
-  icon,
-}) => {
-  const cityName = city || "Unknown city";
+  useEffect(() => {
+    setWeatherData(data);
+  }, [data]);
 
   return (
     <div className="weather-card">
-      {city && (
+      {wheatherData.city ? (
         <>
-          <h2>{cityName}</h2>
-          <img src={icon} alt={description} />
-          <p>{description}</p>
-          <h3>{temperature}°C</h3>
+          <h2>{wheatherData.city}</h2>
+          <img src={wheatherData.icon} alt={wheatherData.description} />
+          <p>{wheatherData.description}</p>
+          <h3>{wheatherData.temperature}°C</h3>
           <p>
-            <b>Latitud:</b> {latitude} <br />
-            <b>Longitud:</b> {longitude}
+            <b>Latitud:</b> {wheatherData.latitude} <br />
+            <b>Longitud:</b> {wheatherData.longitude}
           </p>
         </>
+      ) : (
+        <p>No data available</p>
       )}
     </div>
   );

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./App.css";
 import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
 import { getCityName } from "./common/utils";
@@ -12,8 +12,10 @@ function App() {
   const [error, setError] = useState("");
   const [city, setCity] = useState<string | null>(null);
 
-  const getLocation = () => {
+  const getLocation = useCallback(() => {
+    console.log("Getting location...");
     if (!navigator.geolocation) {
+      console.error("Geolocation is not supported by your browser.");
       setError("Geolocation is not supported by your browser.");
       return;
     }
@@ -25,19 +27,29 @@ function App() {
         setError("");
       },
       (err) => {
+        console.error(err.message);
         setError("Unable to retrieve location. " + err.message);
       }
     );
-  };
+  }, []);
 
   useEffect(() => {
     const getCity = async () => {
-      if (location.latitude && location.longitude) {
-        const city = (await getCityName(
-          location.latitude,
-          location.longitude
-        )) as string;
-        setCity(city);
+      if (location.latitude !== null && location.longitude !== null) {
+        try {
+          const city = (await getCityName(
+            location.latitude,
+            location.longitude
+          )) as string;
+          setCity(city);
+        } catch (err) {
+          console.error(err);
+          setError("Unable to retrieve city name.");
+        }
+      } else {
+        setCity(null);
+        console.log("Location not found");
+        setError("Location not found");
       }
     };
     getCity();
@@ -45,18 +57,21 @@ function App() {
 
   return (
     <div>
-      <button onClick={getLocation}>Get Location</button>
-      {error && <p>{error}</p>}
-      {city && (
+      {!location.latitude && !location.longitude ? (
+        <button onClick={getLocation}>Get Location</button>
+      ) : (
         <WeatherDisplay
-          city={city}
-          temperature={0}
-          description={""}
-          icon={""}
-          latitude={null}
-          longitude={null}
+          data={{
+            city,
+            temperature: 25,
+            description: "Sunny",
+            icon: "https://www.example.com/icon.png",
+            latitude: location.latitude,
+            longitude: location.longitude,
+          }}
         />
       )}
+      {error && <p>{error}</p>}
     </div>
   );
 }

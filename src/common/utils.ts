@@ -12,6 +12,8 @@ export const getCityName = async (latitude: number, longitude: number) => {
           component.types.includes("locality")
       );
       return cityObject.long_name;
+    } else {
+      throw new Error("Unable to retrieve city name");
     }
   } catch (err) {
     console.error(err);
