@@ -7,8 +7,8 @@ import "./WeatherDisplay.css";
 /* types */
 import { WeatherData } from "../../common/types";
 
-const WeatherDisplay: React.FC<{ data: WeatherData }> = ({ data }) => {
-  const [wheatherData, setWeatherData] = useState<WeatherData>(data);
+const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
+  const [wheatherData, setWeatherData] = useState<WeatherData | null>(data);
 
   useEffect(() => {
     setWeatherData(data);
@@ -16,7 +16,7 @@ const WeatherDisplay: React.FC<{ data: WeatherData }> = ({ data }) => {
 
   return (
     <div className="weather-card">
-      {wheatherData.city ? (
+      {wheatherData ? (
         <>
           <h2>{wheatherData.city}</h2>
           <img src={wheatherData.icon} alt={wheatherData.description} />

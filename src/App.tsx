@@ -8,10 +8,10 @@ import "./App.css";
 import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
 
 /* utils */
-import { getCity, getLocation, getWeatherData } from "./common/utils";
+import { getLocation, getWeatherData } from "./common/utils";
 
 /* types */
-import { Location } from "./common/types";
+import { Location, WeatherData } from "./common/types";
 
 function App() {
   // State to store the user's location
@@ -20,19 +20,16 @@ function App() {
     longitude: null,
   });
   const [error, setError] = useState("");
-  const [city, setCity] = useState<string | null>(null);
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const handleGetLocation = useCallback(() => {
     getLocation(setLocation, setError);
   }, []);
 
   useEffect(() => {
-    getCity(location, setCity, setError);
-
     const getWeather = async () => {
       try {
-        const data = await getWeatherData(location);
-        console.log(data);
+        await getWeatherData(location, setError, setWeatherData);
       } catch (err) {
         console.error(err);
         setError("Unable to retrieve weather data.");
@@ -46,17 +43,7 @@ function App() {
     <div>
       <button onClick={handleGetLocation}>Get Location</button>
       {error && <p>{error}</p>}
-      {city && (
-        <WeatherDisplay
-          data={{
-            city: city,
-            temperature: 0,
-            description: "",
-            icon: "",
-            location,
-          }}
-        />
-      )}
+      {location && <WeatherDisplay data={weatherData} />}
     </div>
   );
 }
