@@ -35,7 +35,6 @@ function App() {
   return (
     <div>
       <h1>Geolocalización</h1>
-      <button onClick={getLocation}>Obtener Ubicación</button>
       {location.latitude && location.longitude && (
         <p>
           <b>Latitud:</b> {location.latitude} <br />
