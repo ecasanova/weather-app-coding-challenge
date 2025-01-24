@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
+import { getCityName } from "./common/utils";
 
 function App() {
   // State to store the user's location
@@ -8,12 +10,7 @@ function App() {
     longitude: number | null;
   }>({ latitude: null, longitude: null });
   const [error, setError] = useState("");
-
-  // Get the user's location when the component mounts
-  useEffect(() => {
-    console.log("useEffect");
-    getLocation();
-  }, []);
+  const [city, setCity] = useState<string | null>(null);
 
   const getLocation = () => {
     if (!navigator.geolocation) {
@@ -32,16 +29,34 @@ function App() {
       }
     );
   };
+
+  useEffect(() => {
+    const getCity = async () => {
+      if (location.latitude && location.longitude) {
+        const city = (await getCityName(
+          location.latitude,
+          location.longitude
+        )) as string;
+        setCity(city);
+      }
+    };
+    getCity();
+  }, [location]);
+
   return (
     <div>
-      <h1>Geolocalización</h1>
-      {location.latitude && location.longitude && (
-        <p>
-          <b>Latitud:</b> {location.latitude} <br />
-          <b>Longitud:</b> {location.longitude}
-        </p>
-      )}
+      <button onClick={getLocation}>Get Location</button>
       {error && <p>{error}</p>}
+      {city && (
+        <WeatherDisplay
+          city={city}
+          temperature={0}
+          description={""}
+          icon={""}
+          latitude={null}
+          longitude={null}
+        />
+      )}
     </div>
   );
 }
