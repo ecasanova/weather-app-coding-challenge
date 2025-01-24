@@ -16,13 +16,7 @@ export const getWeatherData = async (
     if (data.cod === "400") {
       setError(data.message);
     }
-    setWeatherData({
-      city: data.name,
-      temperature: data.main.temp,
-      description: data.weather[0].description,
-      icon: `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`,
-      location: location,
-    });
+    setWeatherData(data as WeatherData);
   }
 };
 
@@ -51,4 +45,11 @@ export const getLocation = (
       setError("Unable to retrieve location. " + err.message);
     }
   );
+};
+
+export const formatTime = (timestamp: number): string => {
+  return new Date(timestamp * 1000).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 };

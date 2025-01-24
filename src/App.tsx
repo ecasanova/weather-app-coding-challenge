@@ -41,9 +41,9 @@ function App() {
 
   return (
     <div>
-      <button onClick={handleGetLocation}>Get Location</button>
-      {error && <p>{error}</p>}
+      {!location && <button onClick={handleGetLocation}>Get Location</button>}
       {location && <WeatherDisplay data={weatherData} />}
+      {error && <p>{error}</p>}
     </div>
   );
 }
