@@ -1,35 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  // State to store the user's location
+  const [location, setLocation] = useState<{
+    latitude: number | null;
+    longitude: number | null;
+  }>({ latitude: null, longitude: null });
+  const [error, setError] = useState("");
 
+  // Get the user's location when the component mounts
+  useEffect(() => {
+    console.log("useEffect");
+    getLocation();
+  }, []);
+
+  const getLocation = () => {
+    if (!navigator.geolocation) {
+      setError("La geolocalización no está soportada por tu navegador.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+        setError("");
+      },
+      (err) => {
+        setError("No se pudo obtener la ubicación. " + err.message);
+      }
+    );
+  };
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+    <div>
+      <h1>Geolocalización</h1>
+      <button onClick={getLocation}>Obtener Ubicación</button>
+      {location.latitude && location.longitude && (
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          <b>Latitud:</b> {location.latitude} <br />
+          <b>Longitud:</b> {location.longitude}
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      )}
+      {error && <p>{error}</p>}
+    </div>
+  );
 }
 
-export default App
+export default App;
