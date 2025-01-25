@@ -2,7 +2,7 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 30px;
     max-width: 600px;
     margin: 0 auto;
 }
@@ -11,6 +11,7 @@
     font-size: 24px;
     margin-bottom: 10px;
     color: #333;
+    margin-top: 0px;
 }
 
 .weather-main {
@@ -42,6 +43,14 @@
 .detail-item {
     font-size: 14px;
     color: #555;
+    display: flex;
+    align-items: center;
+}
+
+
+.detail-item .icon{
+    margin-right: 15px;
+    color: #1e88e5
 }
 
 .detail-label {

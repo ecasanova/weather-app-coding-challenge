@@ -44,18 +44,22 @@ function App() {
 
   return (
     <div>
-      {!location.latitude && !location.longitude && (
-        <button onClick={handleGetLocation}>Get Location</button>
-      )}
-      {loading && (
+      {loading ? (
         <div className="loading-container">
           <div className="loading"></div>
         </div>
+      ) : (
+        <>
+          {!location.latitude && !location.longitude && (
+            <button onClick={handleGetLocation}>Get Weather</button>
+          )}
+
+          {location.latitude && location.longitude && (
+            <WeatherDisplay data={weatherData} />
+          )}
+          {error && <p>{error}</p>}
+        </>
       )}
-      {location.latitude && location.longitude && (
-        <WeatherDisplay data={weatherData} />
-      )}
-      {error && <p>{error}</p>}
     </div>
   );
 }
