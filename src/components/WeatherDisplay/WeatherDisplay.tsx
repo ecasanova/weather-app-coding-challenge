@@ -39,6 +39,10 @@ const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
               {Math.round(wheatherData.main.temp)}°C
             </div>
             <div className="weather-description">
+              <img
+                src={`http://openweathermap.org/img/wn/${wheatherData.weather[0].icon}@2x.png`}
+                alt="weather icon"
+              />
               {wheatherData.weather[0].description}
             </div>
           </div>
