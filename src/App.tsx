@@ -34,8 +34,7 @@ function App() {
         await getWeatherData(location, setError, setWeatherData);
         setLoading(false);
       } catch (err) {
-        console.error(err);
-        setError("Unable to retrieve weather data.");
+        setError("Unable to retrieve weather data: " + err);
       }
     };
 

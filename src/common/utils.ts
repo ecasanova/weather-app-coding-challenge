@@ -27,9 +27,7 @@ export const getLocation = (
   >,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
-  console.log("Getting location...");
   if (!navigator.geolocation) {
-    console.error("Geolocation is not supported by your browser.");
     setError("Geolocation is not supported by your browser.");
     return;
   }
@@ -41,7 +39,6 @@ export const getLocation = (
       setError("");
     },
     (err) => {
-      console.error(err.message);
       setError("Unable to retrieve location. " + err.message);
     }
   );
