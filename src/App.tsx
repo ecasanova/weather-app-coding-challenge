@@ -12,6 +12,7 @@ import { getLocation, getWeatherData } from "./common/utils";
 
 /* types */
 import { Location, WeatherData } from "./common/types";
+import CitySelector from "./components/CitySelector/CitySelector";
 
 function App() {
   // State to store the user's location
@@ -22,6 +23,7 @@ function App() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [, setCity] = useState<string | null>(null);
 
   const handleGetLocation = useCallback(() => {
     setLoading(true);
@@ -50,7 +52,13 @@ function App() {
       ) : (
         <>
           {!location.latitude && !location.longitude && (
-            <button onClick={handleGetLocation}>Get Weather</button>
+            <>
+              <button onClick={handleGetLocation}>
+                Get Weather on your current location
+              </button>
+              <p>-- or --</p>
+              <CitySelector setCity={setCity} setLocation={setLocation} />
+            </>
           )}
 
           {location.latitude && location.longitude && (
