@@ -2,17 +2,25 @@
 import { useEffect, useState, useCallback } from "react";
 
 /* styles */
-import "./App.css";
+import styled from "styled-components";
+import { Button, CircularProgress, Container, Typography } from "@mui/material";
 
 /* components */
 import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
+import CitySelector from "./components/CitySelector/CitySelector";
 
 /* utils */
 import { getLocation, getWeatherData } from "./common/utils";
 
 /* types */
 import { Location, WeatherData } from "./common/types";
-import CitySelector from "./components/CitySelector/CitySelector";
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 
 function App() {
   // State to store the user's location
@@ -44,19 +52,25 @@ function App() {
   }, [location]);
 
   return (
-    <div>
+    <Container>
       {loading ? (
-        <div className="loading-container">
-          <div className="loading"></div>
-        </div>
+        <LoadingContainer>
+          <CircularProgress />
+        </LoadingContainer>
       ) : (
         <>
           {!location.latitude && !location.longitude && (
             <>
-              <button onClick={handleGetLocation}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleGetLocation}
+              >
                 Get Weather on your current location
-              </button>
-              <p>-- or --</p>
+              </Button>
+              <Typography variant="body1" align="center">
+                -- or --
+              </Typography>
               <CitySelector setCity={setCity} setLocation={setLocation} />
             </>
           )}
@@ -64,10 +78,10 @@ function App() {
           {location.latitude && location.longitude && (
             <WeatherDisplay data={weatherData} />
           )}
-          {error && <p>{error}</p>}
+          {error && <Typography color="error">{error}</Typography>}
         </>
       )}
-    </div>
+    </Container>
   );
 }
 

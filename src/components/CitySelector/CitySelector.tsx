@@ -1,11 +1,23 @@
 import React, { useState } from "react";
 import { cities } from "../../common/utils";
 import { Location } from "../../common/types";
+import {
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  SelectChangeEvent,
+} from "@mui/material";
+import styled from "@emotion/styled";
 
 interface CitySelectorProps {
   setCity: (city: string) => void;
   setLocation: (location: Location) => void;
 }
+
+const StyledFormControl = styled(FormControl)`
+  min-width: 200px;
+`;
 
 const CitySelector: React.FC<CitySelectorProps> = ({
   setCity,
@@ -17,7 +29,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     city.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
-  const handleCitySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleCitySelect = (e: SelectChangeEvent<string>): void => {
     const selectedCity = cities.find((city) => city.name === e.target.value);
     if (selectedCity) {
       setInputValue(selectedCity.name);
@@ -27,18 +39,24 @@ const CitySelector: React.FC<CitySelectorProps> = ({
   };
 
   return (
-    <div>
-      <select onChange={handleCitySelect} value={inputValue}>
-        <option value="" disabled>
+    <StyledFormControl variant="outlined">
+      <InputLabel id="city-selector-label">Select a city</InputLabel>
+      <Select
+        labelId="city-selector-label"
+        value={inputValue}
+        onChange={handleCitySelect}
+        label="Select a city"
+      >
+        <MenuItem value="" disabled>
           Select a city
-        </option>
+        </MenuItem>
         {filteredCities.map((city) => (
-          <option key={city.name} value={city.name}>
+          <MenuItem key={city.name} value={city.name}>
             {city.name}
-          </option>
+          </MenuItem>
         ))}
-      </select>
-    </div>
+      </Select>
+    </StyledFormControl>
   );
 };
 
