@@ -69,7 +69,7 @@ function App() {
 
   const handleLocation = (location: Location | null): void => {
     setLoading(true);
-    setLocation(location);
+    setLocation(location as Location);
   };
 
   useEffect(() => {

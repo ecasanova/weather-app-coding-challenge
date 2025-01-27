@@ -17,7 +17,7 @@ import {
   WbSunny as Sunrise,
   NightsStay as Sunset,
 } from "@mui/icons-material";
-import { WeatherData } from "../../common/types";
+import { Location, WeatherData } from "../../common/types";
 import { formatTime } from "../../common/utils";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
