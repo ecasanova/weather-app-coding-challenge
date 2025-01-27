@@ -2,22 +2,27 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card, CardContent, Typography, Grid, IconButton } from "@mui/material";
 import {
-  Thermometer,
-  ArrowUpDown,
-  Droplet,
-  Gauge,
-  Wind,
-  Eye,
-  Sunrise,
-  Sunset,
-} from "lucide-react";
+  Thermostat as Thermometer,
+  SwapVert as ArrowUpDown,
+  Opacity as Droplet,
+  Speed as Gauge,
+  Air as Wind,
+  Visibility as Eye,
+  WbSunny as Sunrise,
+  NightsStay as Sunset,
+} from "@mui/icons-material";
 import { WeatherData } from "../../common/types";
 import { formatTime } from "../../common/utils";
+
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 const WeatherCard = styled(Card)`
   max-width: 25rem;
   margin: 1.25rem auto;
   padding: 1.25rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
 `;
 
 const DetailItem = styled.div`
@@ -30,7 +35,15 @@ const DetailLabel = styled.span`
   margin-left: 0.625rem;
 `;
 
-const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
+interface WeatherDisplayProps {
+  data: WeatherData | null;
+  setLocation: (location: Location | null) => void;
+}
+
+const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
+  data,
+  setLocation,
+}) => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(data);
 
   useEffect(() => {
@@ -44,6 +57,9 @@ const WeatherDisplay: React.FC<{ data: WeatherData | null }> = ({ data }) => {
           <CardContent>
             <Typography variant="h5" component="div">
               {weatherData.name}, {weatherData.sys.country}
+              <IconButton onClick={() => setLocation(null)}>
+                <RefreshIcon />
+              </IconButton>
             </Typography>
             <Typography variant="h2" component="div">
               {Math.round(weatherData.main.temp)}°C

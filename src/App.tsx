@@ -15,6 +15,18 @@ import { getLocation, getWeatherData } from "./common/utils";
 /* types */
 import { Location, WeatherData } from "./common/types";
 
+const AppContainer = styled(Container)`
+  background-image: url("/path/to/your/background.jpg");
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+`;
+
 const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -22,12 +34,17 @@ const LoadingContainer = styled.div`
   height: 100vh;
 `;
 
+const StyledButton = styled(Button)`
+  margin: 1rem 0;
+`;
+
+const StyledTypography = styled(Typography)`
+  margin: 1rem 0;
+`;
+
 function App() {
   // State to store the user's location
-  const [location, setLocation] = useState<Location>({
-    latitude: null,
-    longitude: null,
-  });
+  const [location, setLocation] = useState<Location | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
@@ -37,6 +54,11 @@ function App() {
     setLoading(true);
     getLocation(setLocation, setError);
   }, []);
+
+  const handleLocation = (location: Location | null): void => {
+    setLoading(true);
+    setLocation(location);
+  };
 
   useEffect(() => {
     const getWeather = async () => {
@@ -52,36 +74,36 @@ function App() {
   }, [location]);
 
   return (
-    <Container>
+    <AppContainer>
       {loading ? (
         <LoadingContainer>
           <CircularProgress />
         </LoadingContainer>
       ) : (
         <>
-          {!location.latitude && !location.longitude && (
+          {!location && (
             <>
-              <Button
+              <StyledButton
                 variant="contained"
                 color="primary"
                 onClick={handleGetLocation}
               >
                 Get Weather on your current location
-              </Button>
-              <Typography variant="body1" align="center">
+              </StyledButton>
+              <StyledTypography variant="body1" align="center">
                 -- or --
-              </Typography>
-              <CitySelector setCity={setCity} setLocation={setLocation} />
+              </StyledTypography>
+              <CitySelector setCity={setCity} setLocation={handleLocation} />
             </>
           )}
 
-          {location.latitude && location.longitude && (
-            <WeatherDisplay data={weatherData} />
+          {location && (
+            <WeatherDisplay data={weatherData} setLocation={handleLocation} />
           )}
-          {error && <Typography color="error">{error}</Typography>}
+          {error && <StyledTypography color="error">{error}</StyledTypography>}
         </>
       )}
-    </Container>
+    </AppContainer>
   );
 }
 

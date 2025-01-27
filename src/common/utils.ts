@@ -4,12 +4,15 @@ import { City, Location, WeatherData } from "./types";
 
 /* This function takes a latitude and longitude and returns the weather data at that location. */
 export const getWeatherData = async (
-  location: Location,
+  location: Location | null,
   setError: React.Dispatch<React.SetStateAction<string>>,
   setWeatherData: React.Dispatch<React.SetStateAction<WeatherData | null>>
 ) => {
   const apiKey = import.meta.env.VITE_OPEN_WEATHER_API_KEY;
-  if (location.latitude !== null || location.longitude !== null) {
+  if (
+    (location && location.latitude !== null) ||
+    (location && location.longitude !== null)
+  ) {
     const url = `https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&appid=${apiKey}&units=metric`;
     const response = await fetch(url);
     const data = await response.json();
@@ -23,7 +26,10 @@ export const getWeatherData = async (
 /* This function  gets the user's location and sets it in the state. */
 export const getLocation = (
   setLocation: React.Dispatch<
-    React.SetStateAction<{ latitude: number | null; longitude: number | null }>
+    React.SetStateAction<{
+      latitude: number | null;
+      longitude: number | null;
+    } | null>
   >,
   setError: React.Dispatch<React.SetStateAction<string>>
 ) => {
