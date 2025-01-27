@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Card, CardContent, Typography, Grid, IconButton } from "@mui/material";
+import {
+  CardContent,
+  Typography,
+  Grid,
+  IconButton,
+  Paper,
+} from "@mui/material";
 import {
   Thermostat as Thermometer,
   SwapVert as ArrowUpDown,
@@ -16,23 +22,19 @@ import { formatTime } from "../../common/utils";
 
 import RefreshIcon from "@mui/icons-material/Refresh";
 
-const WeatherCard = styled(Card)`
-  max-width: 25rem;
-  margin: 1.25rem auto;
-  padding: 1.25rem;
-  background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+const WeatherCard = styled(Paper)`
+  max-width: 45rem;
 `;
 
 const DetailItem = styled.div`
   display: flex;
   align-items: center;
   margin: 0.625rem 0;
+  font-size: 0.875rem;
 `;
 
 const DetailLabel = styled.span`
-  margin-left: 0.625rem;
+  margin-left: 0.2rem;
 `;
 
 interface WeatherDisplayProps {
@@ -64,16 +66,10 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
             <Typography variant="h2" component="div">
               {Math.round(weatherData.main.temp)}°C
             </Typography>
+            <Typography variant="body1">
+              {weatherData.weather[0].description}
+            </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <img
-                  src={`http://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                  alt="weather icon"
-                />
-                <Typography variant="body1">
-                  {weatherData.weather[0].description}
-                </Typography>
-              </Grid>
               <Grid item xs={12} sm={6}>
                 <DetailItem>
                   <IconButton>
@@ -88,7 +84,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                     <ArrowUpDown />
                   </IconButton>
                   <DetailLabel>
-                    Min/Max: {Math.round(weatherData.main.temp_min)}°C /{" "}
+                    Min/Max: {Math.round(weatherData.main.temp_min)}/
                     {Math.round(weatherData.main.temp_max)}°C
                   </DetailLabel>
                 </DetailItem>
@@ -108,6 +104,8 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                     Pressure: {weatherData.main.pressure} hPa
                   </DetailLabel>
                 </DetailItem>
+              </Grid>
+              <Grid item xs={12} sm={6}>
                 <DetailItem>
                   <IconButton>
                     <Wind />

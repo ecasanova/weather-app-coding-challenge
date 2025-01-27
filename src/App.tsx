@@ -3,7 +3,16 @@ import { useEffect, useState, useCallback } from "react";
 
 /* styles */
 import styled from "styled-components";
-import { Button, CircularProgress, Container, Typography } from "@mui/material";
+import {
+  Button,
+  Card,
+  CardContent,
+  Chip,
+  CircularProgress,
+  Container,
+  Divider,
+  Typography,
+} from "@mui/material";
 
 /* components */
 import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
@@ -14,6 +23,9 @@ import { getLocation, getWeatherData } from "./common/utils";
 
 /* types */
 import { Location, WeatherData } from "./common/types";
+
+/* icons */
+import { LocationOn } from "@mui/icons-material";
 
 const AppContainer = styled(Container)`
   background-image: url("/path/to/your/background.jpg");
@@ -82,19 +94,23 @@ function App() {
       ) : (
         <>
           {!location && (
-            <>
-              <StyledButton
-                variant="contained"
-                color="primary"
-                onClick={handleGetLocation}
-              >
-                Get Weather on your current location
-              </StyledButton>
-              <StyledTypography variant="body1" align="center">
-                -- or --
-              </StyledTypography>
-              <CitySelector setCity={setCity} setLocation={handleLocation} />
-            </>
+            <Card>
+              <CardContent>
+                <StyledButton
+                  variant="contained"
+                  color="primary"
+                  onClick={handleGetLocation}
+                >
+                  Get Weather on your current location <LocationOn />
+                </StyledButton>
+                <StyledTypography variant="body1" align="center">
+                  <Divider>
+                    <Chip label="OR" size="small" />
+                  </Divider>
+                </StyledTypography>
+                <CitySelector setCity={setCity} setLocation={handleLocation} />
+              </CardContent>
+            </Card>
           )}
 
           {location && (
