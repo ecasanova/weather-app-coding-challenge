@@ -16,6 +16,16 @@ const darkTheme = createTheme({
   typography: {
     fontFamily: "Roboto",
   },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          fontFamily: "Roboto",
+          backgroundColor: "#f1f1f1",
+        },
+      },
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(

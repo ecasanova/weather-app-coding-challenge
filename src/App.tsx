@@ -1,31 +1,21 @@
 /* react */
-import { useEffect, useState, useCallback } from "react";
-
-/* styles */
-import styled from "styled-components";
-import {
-  Button,
-  Card,
-  CardContent,
-  Chip,
-  CircularProgress,
-  Container,
-  Divider,
-  Typography,
-} from "@mui/material";
-
-/* components */
-import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
-import CitySelector from "./components/CitySelector/CitySelector";
-
-/* utils */
-import { getLocation, getWeatherData } from "./common/utils";
+import { useEffect, useState } from "react";
 
 /* types */
 import { Location, WeatherData } from "./common/types";
 
+/* utils */
+import { getWeatherData } from "./common/utils";
+
+/* styles */
+import styled from "styled-components";
+import { CircularProgress, Container, Typography } from "@mui/material";
+
+/* components */
+import WeatherDisplay from "./components/WeatherDisplay/WeatherDisplay";
+import LocationSelector from "./components/LocationSelector/LocationSelector";
+
 /* icons */
-import { LocationOn } from "@mui/icons-material";
 
 const AppContainer = styled(Container)`
   background-image: url("/path/to/your/background.jpg");
@@ -46,10 +36,6 @@ const LoadingContainer = styled.div`
   height: 100vh;
 `;
 
-const StyledButton = styled(Button)`
-  margin: 1rem 0;
-`;
-
 const StyledTypography = styled(Typography)`
   margin: 1rem 0;
 `;
@@ -60,12 +46,6 @@ function App() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
-  const [, setCity] = useState<string | null>(null);
-
-  const handleGetLocation = useCallback(() => {
-    setLoading(true);
-    getLocation(setLocation, setError);
-  }, []);
 
   const handleLocation = (location: Location | null): void => {
     setLoading(true);
@@ -94,23 +74,12 @@ function App() {
       ) : (
         <>
           {!location && (
-            <Card>
-              <CardContent>
-                <StyledButton
-                  variant="contained"
-                  color="primary"
-                  onClick={handleGetLocation}
-                >
-                  Get Weather on your current location <LocationOn />
-                </StyledButton>
-                <StyledTypography variant="body1" align="center">
-                  <Divider>
-                    <Chip label="OR" size="small" />
-                  </Divider>
-                </StyledTypography>
-                <CitySelector setCity={setCity} setLocation={handleLocation} />
-              </CardContent>
-            </Card>
+            <LocationSelector
+              setLocation={setLocation}
+              setLoading={setLoading}
+              setError={setError}
+              handleLocation={handleLocation}
+            />
           )}
 
           {location && (

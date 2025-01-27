@@ -1,62 +1,53 @@
-import React, { useState } from "react";
+import React from "react";
 import { cities } from "../../common/utils";
 import { Location } from "../../common/types";
-import {
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FormControl, Box, TextField, Autocomplete } from "@mui/material";
 import styled from "@emotion/styled";
+
+const StyledFormControl = styled(FormControl)`
+  min-width: 200px;
+  width: 100%;
+`;
 
 interface CitySelectorProps {
   setCity: (city: string) => void;
   setLocation: (location: Location) => void;
 }
 
-const StyledFormControl = styled(FormControl)`
-  min-width: 200px;
-`;
-
 const CitySelector: React.FC<CitySelectorProps> = ({
   setCity,
   setLocation,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const citiesOptions = cities.map((city) => {
+    return { label: city.name };
+  });
 
-  const filteredCities = cities.filter((city) =>
-    city.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
-
-  const handleCitySelect = (e: SelectChangeEvent<string>): void => {
-    const selectedCity = cities.find((city) => city.name === e.target.value);
+  const handleCitySelect = (value: string): void => {
+    const selectedCity = cities.find((city) => city.name === value);
     if (selectedCity) {
-      setInputValue(selectedCity.name);
       setCity(selectedCity.name);
       setLocation(selectedCity.location);
     }
   };
 
   return (
-    <StyledFormControl variant="outlined">
-      <InputLabel id="city-selector-label">Select a city</InputLabel>
-      <Select
-        labelId="city-selector-label"
-        value={inputValue}
-        onChange={handleCitySelect}
-        label="Select a city"
-      >
-        <MenuItem value="" disabled>
-          Select a city
-        </MenuItem>
-        {filteredCities.map((city) => (
-          <MenuItem key={city.name} value={city.name}>
-            {city.name}
-          </MenuItem>
-        ))}
-      </Select>
-    </StyledFormControl>
+    <Box sx={{ p: 2 }}>
+      <StyledFormControl variant="outlined">
+        <Autocomplete
+          disablePortal
+          options={citiesOptions}
+          onChange={(_e, value) => {
+            if (value) {
+              handleCitySelect(value.label);
+            }
+          }}
+          sx={{ width: 300 }}
+          renderInput={(params) => (
+            <TextField label="Select a city" {...params} />
+          )}
+        />
+      </StyledFormControl>
+    </Box>
   );
 };
 
