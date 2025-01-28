@@ -52,3 +52,19 @@ export interface City {
   name: string;
   location: Location;
 }
+
+export interface MainTextMatchedSubstrings {
+  offset: number;
+  length: number;
+}
+export interface StructuredFormatting {
+  main_text: string;
+  secondary_text: string;
+  main_text_matched_substrings?: readonly MainTextMatchedSubstrings[];
+}
+
+export interface PlaceType {
+  place_id: string;
+  description: string;
+  structured_formatting: StructuredFormatting;
+}

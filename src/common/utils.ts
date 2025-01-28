@@ -77,3 +77,23 @@ export const cities: City[] = [
   { name: "San Diego", location: { latitude: 32.7157, longitude: -117.1611 } },
   { name: "Dallas", location: { latitude: 32.7767, longitude: -96.797 } },
 ];
+
+export const loadScript = (
+  src: string,
+  position: HTMLElement | null,
+  id: string
+) => {
+  if (!position) {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
+  script.src = src;
+  position.appendChild(script);
+};
+
+export const autocompleteService = {
+  current: null as google.maps.places.AutocompleteService | null,
+};
