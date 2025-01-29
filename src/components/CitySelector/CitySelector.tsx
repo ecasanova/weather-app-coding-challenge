@@ -131,7 +131,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     if (value) {
       setCity(value.description);
       if (value.place_id) {
-        fetchPlaceDetails(value.place_id); // Llamar a la API para obtener la ubicación
+        fetchPlaceDetails(value.place_id);
       }
     }
   };
@@ -157,10 +157,10 @@ const CitySelector: React.FC<CitySelectorProps> = ({
           const lng = place.geometry.location.lng();
           setLocation({ latitude: lat, longitude: lng });
         } else {
-          console.error("No se encontró la ubicación");
+          console.error("Location not found");
         }
       } else {
-        console.error("Error al obtener detalles del lugar:", status);
+        console.error("Error fetching place details", status);
       }
     });
   };
