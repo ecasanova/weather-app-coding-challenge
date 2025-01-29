@@ -25,6 +25,9 @@ import RefreshIcon from "@mui/icons-material/Refresh";
 
 const WeatherCard = styled(Paper)`
   width: 30rem;
+  @media (max-width: 768px) {
+    width: 20rem;
+  }
 `;
 
 const DetailItem = styled.div`
