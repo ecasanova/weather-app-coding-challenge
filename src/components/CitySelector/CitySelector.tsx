@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { Location, PlaceType } from "../../common/types";
+import { AutocompletePrediction, PlacesServiceStatus } from "@types/googlemaps";
 import { autocompleteService, loadScript } from "../../common/utils";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -52,9 +53,15 @@ const CitySelector: React.FC<CitySelectorProps> = ({
       debounce(
         (
           request: { input: string },
-          callback: (results?: readonly PlaceType[]) => void
+          callback: (
+            results: AutocompletePrediction[] | null,
+            status: PlacesServiceStatus
+          ) => void
         ) => {
-          autocompleteService.current!.getPlacePredictions(request, callback);
+          return autocompleteService.current!.getPlacePredictions(
+            request,
+            callback
+          );
         },
         400
       ),
@@ -81,26 +88,41 @@ const CitySelector: React.FC<CitySelectorProps> = ({
       return undefined;
     }
 
-    fetchPlaces({ input: inputValue }, (results?: readonly PlaceType[]) => {
-      if (active) {
-        let newOptions: readonly PlaceType[] = [];
+    fetchPlaces(
+      { input: inputValue },
+      (
+        results: AutocompletePrediction[] | null,
+        status: PlacesServiceStatus
+      ) => {
+        if (active) {
+          let newOptions: readonly PlaceType[] = [];
 
-        if (value) {
-          newOptions = [value];
+          if (value) {
+            newOptions = [value];
+          }
+
+          if (
+            results &&
+            status === window.google.maps.places.PlacesServiceStatus.OK
+          ) {
+            newOptions = [
+              ...newOptions,
+              ...results.map((result) => ({
+                description: result.description,
+                place_id: result.place_id,
+              })),
+            ];
+          }
+
+          setOptions(newOptions);
         }
-
-        if (results) {
-          newOptions = [...newOptions, ...results];
-        }
-
-        setOptions(newOptions);
       }
-    });
+    );
 
     return () => {
       active = false;
     };
-  }, [value, inputValue, fetch]);
+  }, [value, inputValue, fetchPlaces]);
 
   const handleCitySelect = (value: PlaceType | null): void => {
     if (value) {
