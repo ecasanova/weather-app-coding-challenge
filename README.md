@@ -2,10 +2,13 @@
 
 This project is a weather application that allows users to get updated weather information for different locations.
 
+[Demo](https://weather-app-coding-challenge.vercel.app)
+
+
 ## Features
 
 - Current weather lookup by location.
-- Display of temperature, humidity, and weather conditions.
+- Display of temperature, humidity, and weather conditions. (Using: [Open Weather API](https://openweathermap.org) )
 - Intuitive and easy-to-use user interface.
 
 ## Installation
