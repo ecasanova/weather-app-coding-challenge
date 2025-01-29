@@ -34,7 +34,8 @@ Follow these steps to install and run the project locally:
     npm install
     ```
 
-4. Setup .env vars
+4. Setup .env vars:
+
     Get Open Weather API Key on: [Open Weather API](https://openweathermap.org/api)
     Get Google Maps API Key on: [Google Developers Console](https://console.cloud.google.com/)
 
