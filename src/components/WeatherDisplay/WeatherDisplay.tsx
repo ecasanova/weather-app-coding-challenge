@@ -6,6 +6,7 @@ import {
   Grid,
   IconButton,
   Paper,
+  Box,
 } from "@mui/material";
 import {
   Thermostat as Thermometer,
@@ -23,7 +24,7 @@ import { formatTime } from "../../common/utils";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 const WeatherCard = styled(Paper)`
-  max-width: 45rem;
+  width: 30rem;
 `;
 
 const DetailItem = styled.div`
@@ -35,6 +36,12 @@ const DetailItem = styled.div`
 
 const DetailLabel = styled.span`
   margin-left: 0.2rem;
+`;
+
+const WeatherIcon = styled.img`
+  background: #d1d1f1;
+  border-radius: 20rem;
+  margin: 1rem;
 `;
 
 interface WeatherDisplayProps {
@@ -63,17 +70,41 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 <RefreshIcon />
               </IconButton>
             </Typography>
-            <Typography variant="h2" component="div">
-              {Math.round(weatherData.main.temp)}°C
-            </Typography>
-            <Typography variant="body1">
-              {weatherData.weather[0].description}
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                p: 5,
+              }}
+            >
+              <Typography variant="h2" component="div" color="primary">
+                {Math.round(weatherData.main.temp)}°C
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  flexDirection: "column",
+                  p: 0,
+                }}
+              >
+                <WeatherIcon
+                  src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+                  alt={weatherData.weather[0].description}
+                />
+                <Typography variant="body1">
+                  {weatherData.weather[0].description}
+                </Typography>
+              </Box>
+            </Box>
+
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <DetailItem>
                   <IconButton>
-                    <Thermometer />
+                    <Thermometer color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Feels like: {Math.round(weatherData.main.feels_like)}°C
@@ -81,7 +112,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <ArrowUpDown />
+                    <ArrowUpDown color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Min/Max: {Math.round(weatherData.main.temp_min)}/
@@ -90,7 +121,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <Droplet />
+                    <Droplet color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Humidity: {weatherData.main.humidity}%
@@ -98,7 +129,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <Gauge />
+                    <Gauge color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Pressure: {weatherData.main.pressure} hPa
@@ -108,7 +139,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
               <Grid item xs={12} sm={6}>
                 <DetailItem>
                   <IconButton>
-                    <Wind />
+                    <Wind color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Wind: {weatherData.wind.speed} m/s, {weatherData.wind.deg}°
@@ -116,7 +147,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <Eye />
+                    <Eye color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Visibility: {weatherData.visibility / 1000} km
@@ -124,7 +155,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <Sunrise />
+                    <Sunrise color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Sunrise: {formatTime(weatherData.sys.sunrise)}
@@ -132,7 +163,7 @@ const WeatherDisplay: React.FC<WeatherDisplayProps> = ({
                 </DetailItem>
                 <DetailItem>
                   <IconButton>
-                    <Sunset />
+                    <Sunset color="primary" />
                   </IconButton>
                   <DetailLabel>
                     Sunset: {formatTime(weatherData.sys.sunset)}

@@ -18,9 +18,6 @@ import LocationSelector from "./components/LocationSelector/LocationSelector";
 /* icons */
 
 const AppContainer = styled(Container)`
-  background-image: url("/path/to/your/background.jpg");
-  background-size: cover;
-  background-position: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -38,6 +35,13 @@ const LoadingContainer = styled.div`
 
 const StyledTypography = styled(Typography)`
   margin: 1rem 0;
+`;
+
+const StyledlLink = styled.a`
+  color: inherit;
+  text-decoration: underline;
+  font-weight: bold;
+  color: #999;
 `;
 
 function App() {
@@ -92,9 +96,12 @@ function App() {
           </>
           <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
             Develop by{" "}
-            <a href="https://www.linkedin.com/in/ecasanovave/" target="_blank">
+            <StyledlLink
+              href="https://www.linkedin.com/in/ecasanovave/"
+              target="_blank"
+            >
               Enrique Casanova
-            </a>
+            </StyledlLink>
           </Typography>
         </>
       )}
