@@ -12,7 +12,7 @@ import styled from "@emotion/styled";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 import { Location, PlaceType } from "../../common/types";
-import { AutocompletePrediction, PlacesServiceStatus } from "@types/googlemaps";
+
 import { autocompleteService, loadScript } from "../../common/utils";
 
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -48,23 +48,25 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     loaded.current = true;
   }
 
+  interface FetchPlacesRequest {
+    input: string;
+  }
+
+  interface FetchPlacesCallback {
+    (
+      results: google.maps.places.AutocompletePrediction[] | null,
+      status: google.maps.places.PlacesServiceStatus
+    ): void;
+  }
+
   const fetchPlaces = useMemo(
     () =>
-      debounce(
-        (
-          request: { input: string },
-          callback: (
-            results: AutocompletePrediction[] | null,
-            status: PlacesServiceStatus
-          ) => void
-        ) => {
-          return autocompleteService.current!.getPlacePredictions(
-            request,
-            callback
-          );
-        },
-        400
-      ),
+      debounce((request: FetchPlacesRequest, callback: FetchPlacesCallback) => {
+        return autocompleteService.current!.getPlacePredictions(
+          request,
+          callback
+        );
+      }, 400),
     []
   );
 
@@ -91,8 +93,8 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     fetchPlaces(
       { input: inputValue },
       (
-        results: AutocompletePrediction[] | null,
-        status: PlacesServiceStatus
+        results: google.maps.places.AutocompletePrediction[] | null,
+        status: google.maps.places.PlacesServiceStatus
       ) => {
         if (active) {
           let newOptions: readonly PlaceType[] = [];
@@ -110,6 +112,7 @@ const CitySelector: React.FC<CitySelectorProps> = ({
               ...results.map((result) => ({
                 description: result.description,
                 place_id: result.place_id,
+                structured_formatting: result.structured_formatting,
               })),
             ];
           }

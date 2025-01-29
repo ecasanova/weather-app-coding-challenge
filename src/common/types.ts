@@ -1,3 +1,5 @@
+/// <reference types="@types/googlemaps" />
+
 export interface WeatherData {
   coord: {
     lon: number;
