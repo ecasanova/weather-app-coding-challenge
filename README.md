@@ -34,7 +34,16 @@ Follow these steps to install and run the project locally:
     npm install
     ```
 
-4. Start the application:
+4. Setup .env vars
+    Get Open Weather API Key on: [Open Weather API](https://openweathermap.org/api)
+    Get Google Maps API Key on: [Google Developers Console](https://console.cloud.google.com/)
+
+    ```bash
+    VITE_OPEN_WEATHER_API_KEY=
+    VITE_GOOGLE_MAPS_API_KEY=
+    ```
+
+5. Start the application:
 
     ```bash
     npm run dev
@@ -45,4 +54,3 @@ Follow these steps to install and run the project locally:
 1. Open your browser and navigate to `http://localhost:5173`.
 2. Enter a location in the search bar to get the current weather.
 3. Or click to get the weather for your current location (requires browser location permissions).
-
