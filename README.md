@@ -37,7 +37,10 @@ Follow these steps to install and run the project locally:
 4. Setup .env vars:
 
     Get Open Weather API Key on: [Open Weather API](https://openweathermap.org/api)
+
     Get Google Maps API Key on: [Google Developers Console](https://console.cloud.google.com/)
+
+    Create a .env file with these values
 
     ```bash
     VITE_OPEN_WEATHER_API_KEY=
