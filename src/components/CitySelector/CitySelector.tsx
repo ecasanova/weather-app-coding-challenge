@@ -111,25 +111,33 @@ const CitySelector: React.FC<CitySelectorProps> = ({
     }
   };
   const fetchPlaceDetails = async (placeId: string) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${GOOGLE_MAPS_API_KEY}`
-      );
-      const data = await response.json();
-      console.log(data);
-      if (
-        data.result &&
-        data.result.geometry &&
-        data.result.geometry.location
-      ) {
-        const { lat, lng } = data.result.geometry.location;
-        setLocation({ latitude: lat, longitude: lng });
-      } else {
-        console.error("No se encontró la ubicación");
-      }
-    } catch (error) {
-      console.error("Error al obtener detalles del lugar:", error);
+    if (!window.google) {
+      console.error("Google Maps JavaScript API no está cargada.");
+      return;
     }
+
+    const service = new window.google.maps.places.PlacesService(
+      document.createElement("div")
+    );
+
+    const request = {
+      placeId: placeId,
+      fields: ["geometry"],
+    };
+
+    service.getDetails(request, (place, status) => {
+      if (status === window.google.maps.places.PlacesServiceStatus.OK) {
+        if (place && place.geometry && place.geometry.location) {
+          const lat = place.geometry.location.lat();
+          const lng = place.geometry.location.lng();
+          setLocation({ latitude: lat, longitude: lng });
+        } else {
+          console.error("No se encontró la ubicación");
+        }
+      } else {
+        console.error("Error al obtener detalles del lugar:", status);
+      }
+    });
   };
 
   return (
