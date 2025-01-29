@@ -73,19 +73,29 @@ function App() {
         </LoadingContainer>
       ) : (
         <>
-          {!location && (
-            <LocationSelector
-              setLocation={setLocation}
-              setLoading={setLoading}
-              setError={setError}
-              handleLocation={handleLocation}
-            />
-          )}
+          <>
+            {!location && (
+              <LocationSelector
+                setLocation={setLocation}
+                setLoading={setLoading}
+                setError={setError}
+                handleLocation={handleLocation}
+              />
+            )}
 
-          {location && (
-            <WeatherDisplay data={weatherData} setLocation={handleLocation} />
-          )}
-          {error && <StyledTypography color="error">{error}</StyledTypography>}
+            {location && (
+              <WeatherDisplay data={weatherData} setLocation={handleLocation} />
+            )}
+            {error && (
+              <StyledTypography color="error">{error}</StyledTypography>
+            )}
+          </>
+          <Typography variant="body1" color="textSecondary" sx={{ mt: 2 }}>
+            Develop by{" "}
+            <a href="https://www.linkedin.com/in/ecasanovave/" target="_blank">
+              Enrique Casanova
+            </a>
+          </Typography>
         </>
       )}
     </AppContainer>
