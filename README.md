@@ -4,6 +4,7 @@ This project is a weather application that allows users to get updated weather i
 
 [Demo](https://weather-app-coding-challenge.vercel.app)
 
+![Screenshot 2025-01-29 at 10 35 55 AM](https://github.com/user-attachments/assets/22e6c8a8-25df-4a77-8288-c6d1613f5ba2)
 
 ## Features
 
@@ -43,4 +44,5 @@ Follow these steps to install and run the project locally:
 
 1. Open your browser and navigate to `http://localhost:5173`.
 2. Enter a location in the search bar to get the current weather.
-3. Or click on get wheather based on your current location
+3. Or click to get the weather for your current location (requires browser location permissions).
+
